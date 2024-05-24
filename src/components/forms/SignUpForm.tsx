@@ -3,8 +3,10 @@ import { Button, Input, message } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { SignUpFormType } from "@/types";
+import { registerUser } from "@/api/auth";
 
 const SignUpForm = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [isCaptchaValid, setIsCaptchaValid] = useState<string | null>(null);
   const {
     handleSubmit,
@@ -14,12 +16,28 @@ const SignUpForm = () => {
 
   const onSubmit = (data: SignUpFormType) => {
     if (!isCaptchaValid) message.error("fill the captcha");
+    messageApi.open({
+      type: "loading",
+      content: "signing up...",
+      duration: 0,
+    });
+    registerUser(data)
+      .then(() => {
+        messageApi.destroy();
+        message.success("signed up successfully");
+      })
+      .catch((err) => {
+        messageApi.destroy();
+        console.log(err?.response?.data?.message);
+        message.error(err?.response?.data?.message);
+      });
   };
 
   const captchaHandler = (data: string | null) => setIsCaptchaValid(data);
 
   return (
     <div className="flex flex-col gap-y-3">
+      {contextHolder}
       {/* Using Controller for Ant Design's Input with validation rules */}
       <Controller
         name="name"
