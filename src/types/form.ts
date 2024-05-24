@@ -1,6 +1,5 @@
-export interface RegisterFormType {
-  firstName: string;
-  lastName: string;
+export interface SignUpFormType {
+  name: string;
   email: string;
   password: string;
 }
