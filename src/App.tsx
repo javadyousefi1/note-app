@@ -16,6 +16,7 @@ import { getCurrentUser } from "./features/auth";
 import { AppDispatch } from "./store/store";
 // antd
 import { ConfigProvider } from "antd";
+import Layout from "./layout/Layout";
 
 function App() {
   // redux dispatcher
@@ -34,14 +35,17 @@ function App() {
   return (
     <>
       <ConfigProvider
+        componentSize="large"
         theme={{
           token: {
-            colorPrimary: "var(  --color-primary-800  )",
+            colorPrimary: "var(--color-primary)",
           },
         }}
       >
         <Toaster />
-        <RouterProvider router={router} />
+        <Layout>
+          <RouterProvider router={router} />
+        </Layout>
       </ConfigProvider>
     </>
   );
