@@ -4,9 +4,16 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { SignUpFormType } from "@/types";
 import { registerUser } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
+import { setUserData } from "@/features/auth";
+import { AppDispatch } from "@/store/store";
+import { useDispatch } from "react-redux";
 
 const SignUpForm = () => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [isLoading, setIsloading] = useState(false);
   const [isCaptchaValid, setIsCaptchaValid] = useState<string | null>(null);
   const {
     handleSubmit,
@@ -14,21 +21,21 @@ const SignUpForm = () => {
     formState: { isValid },
   } = useForm<SignUpFormType>();
 
-  const onSubmit = (data: SignUpFormType) => {
-    if (!isCaptchaValid) message.error("fill the captcha");
-    messageApi.open({
-      type: "loading",
-      content: "signing up...",
-      duration: 0,
-    });
-    registerUser(data)
-      .then(() => {
-        messageApi.destroy();
+  const onSubmit = (formResult: SignUpFormType) => {
+    if (!isCaptchaValid) return message.error("fill the captcha");
+
+    setIsloading(true);
+    registerUser(formResult)
+      .then(({ data }) => {
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+        dispatch(setUserData(data?.data));
+        setIsloading(false);
         message.success("signed up successfully");
       })
       .catch((err) => {
-        messageApi.destroy();
-        console.log(err?.response?.data?.message);
+        setIsloading(false);
         message.error(err?.response?.data?.message);
       });
   };
@@ -37,7 +44,6 @@ const SignUpForm = () => {
 
   return (
     <div className="flex flex-col gap-y-3">
-      {contextHolder}
       {/* Using Controller for Ant Design's Input with validation rules */}
       <Controller
         name="name"
@@ -88,6 +94,7 @@ const SignUpForm = () => {
         htmlType="submit"
         disabled={!isValid}
         onClick={handleSubmit(onSubmit)}
+        loading={isLoading}
       >
         sign up
       </Button>

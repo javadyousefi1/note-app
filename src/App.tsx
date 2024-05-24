@@ -28,10 +28,6 @@ function App() {
     dispatch(getCurrentUser());
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
   return (
     <>
       <ConfigProvider

@@ -1,13 +1,11 @@
+import { checkAuth } from "@/api/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-function checkAuth() {}
 interface userObject {
   _id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
   profile: null;
-  address: null;
   joinDate: number;
   isVerify: boolean;
 }

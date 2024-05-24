@@ -3,8 +3,17 @@ import { Button, Input, message } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { LoginFormType } from "@/types";
+import { loginUser } from "@/api/auth";
+import { useDispatch } from "react-redux";
+import { setUserData } from "@/features/auth";
+import { AppDispatch } from "@/store/store";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const [isLoading, setIsloading] = useState(false);
+
   const [isCaptchaValid, setIsCaptchaValid] = useState<string | null>(null);
   const {
     handleSubmit,
@@ -13,7 +22,22 @@ const LoginForm = () => {
   } = useForm<LoginFormType>();
 
   const onSubmit = (data: LoginFormType) => {
-    if (!isCaptchaValid) message.error("fill the captcha");
+    if (!isCaptchaValid) return message.error("fill the captcha");
+
+    setIsloading(true);
+    loginUser(data)
+      .then(({ data }) => {
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+        dispatch(setUserData(data?.data));
+        setIsloading(false);
+        message.success("log in successfully");
+      })
+      .catch((err) => {
+        setIsloading(false);
+        message.error(err?.response?.data?.message);
+      });
   };
 
   const captchaHandler = (data: string | null) => setIsCaptchaValid(data);
@@ -59,6 +83,7 @@ const LoginForm = () => {
         type={!isValid ? "default" : "primary"}
         htmlType="submit"
         disabled={!isValid}
+        loading={isLoading}
         onClick={handleSubmit(onSubmit)}
       >
         Log in
