@@ -6,10 +6,10 @@
   :root {
     --color-black: #0c0c0c;
     --color-white: #ffffff;
-    --color-primary: #18122b;
-    --color-secondary: #443c68;
-    --color-dark: #635985;
-    --color-nigth: #18122b;
+    --color-primary: #00ABB3;
+    --color-secondary: #3C4048;
+    --color-my-gray: #B2B2B2;
+    --color-space: #EAEAEA;
   }
 }
 

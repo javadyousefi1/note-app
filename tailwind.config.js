@@ -9,8 +9,8 @@ export default {
       colors: {
         "primary": "var(--color-primary)",
         "secondary": "var(--color-secondary)",
-        "dark": "var(--color-dark)",
-        "nigth": "var(--color-nigth)",
+        "my-gray": "var(--color-my-gray)",
+        "space": "var(--color-space)",
       },
       screens: {
         'customResolution': "450px",

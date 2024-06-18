@@ -36,6 +36,19 @@ function App() {
           token: {
             colorPrimary: "var(--color-primary)",
           },
+          components: {
+            Input: {
+              // colorPrimary: "var(--color-space)",
+              algorithm: true, // Enable algorithm
+              colorBgContainer: "var(--color-space)",
+              controlHeight: 38,
+              colorBorder: "none",
+              colorPrimaryBorder: "none",
+            },
+            Button: {
+              colorBorder: "none",
+            },
+          },
         }}
       >
         <Toaster />
