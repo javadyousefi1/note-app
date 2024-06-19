@@ -8,7 +8,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 export default defineConfig(({ mode }) => {
   return {
     build: {
-      outDir: './build'
+    //  outDir: './build'
     },
     plugins: [
       react(),
